@@ -400,25 +400,18 @@ Where $Loss_{wire,eddy}$ is the total eddy current loss in the windings. At nomi
 \subsubsection{Mechanical Losses}
 
 Mechanical losses are separated into windage and bearing losses. Windage losses are calculated in the airgap and on the axial faces of the rotor. 
-The windage losses in the airgap are estimated using the model from reference \cite{Huang} where power loss is given by
+The windage losses in the airgap are estimated using the model from reference \cite{Huang} where power loss $P$ is determined based on $k$, a constant equal to 2.5 for slotted surfaces, $C_{f}$, the skin friction coefficient, $\rho$ the density of air, $\omega$ the rotational velocity, $r$ the rotor radius, and $l$ the axial length of the rotor.
 
 \begin{equation}
 P = kC_{f}\pi\rho\omega^{3}r^{4}l
 \label{eq:Windage}
 \end{equation}
 
-Where P is the power loss, k is a constant equal to 2.5 for slotted surfaces, $C_{f}$ is the skin friction coefficient, $\rho$ is the density of air, $\omega$ is the rotational velocity, r is the rotor radius, and l is the axial length of the rotor. $C_{f}$ for the range of operation of the motor is given by
+$C_{f}$ for the range of operation of the motor is a function of $\delta$, the airgap length, and $Re_{\delta}$, the airgap Reynolds Number
 
 \begin{equation}
-C_{f}= 0.515*\frac{\frac{\delta^{0.3}}{r}}{Re_{\delta}^{0.5}}
+C_{f}= 0.515*\frac{\frac{\delta^{0.3}}{r}}{Re_{\delta}^{0.5}} , \quad \quad \quad Re_{\delta}=\frac{\rho\omega r \delta}{\mu}
 \label{eq:Cf}
-\end{equation}
-
-Where $\delta$ is the airgap length and $Re_{\delta}$ is the airgap Reynolds Number given by
-
-\begin{equation}
-Re_{\delta}=\frac{\rho\omega r \delta}{\mu}
-\label{eq:Re_delta}
 \end{equation}
 
 Where $\mu$ is the dynamic viscosity of air.The windage loss on the axial faces of the rotor is approximated using the loss model for disks in free space from reference \cite{Saari}. Where P is given by 
@@ -428,18 +421,12 @@ P =0.5C_{f}\rho\omega^{3}(r_{2}^{5}-r_{1}^{5})
 \label{eq:AxialWindage}
 \end{equation}
 
-where $r_{2}$ is rotor outer radius and $r_{1}$ is the rotor inner radius, with $C_{f}$ given by
+where $r_{2}$ is rotor outer radius and $r_{1}$ is the rotor inner radius, with $C_{f}$ given by is calculated in part from the tip Reynolds number $Re_{r}$
 
 \begin{equation}
-C_{f}= \frac{0.146}{Re_{r}^{2}}
-\label{eq:Cf2}
-\end{equation}
-
-Where $Re_{r}$ is the tip Reynolds number given by 
-
-\begin{equation}
+C_{f}= \frac{0.146}{Re_{r}^{2}}, \quad \quad \quad
 Re_{\delta}=\frac{\rho\omega r^{2}}{\mu}
-\label{eq:Re2}
+\label{eq:Cf2}
 \end{equation}
 
 Bearing loss is estimated using the equation for bearing moment found in \cite{Krings}. Bearing loss is defined by
@@ -496,9 +483,11 @@ At nominal operating conditions $\tau_{req}$ is 262 Nm and $Loss_{resistive}$ is
 \subsubsection{Motor Model Summary}
 The total loss predicted by this model at nominal motor operating condition is 2781 watts. The predicted motor efficiency is 95.6\% at the experimental operating conditions of 255N-m and 2250 RPM. As noted previously this is likely to be an underestimate of the losses. It is expected that the core loss estimate will need to be updated based on the results of thermal data from motor testing. This update will in turn increase the resistive losses in the windings as the required torque will increase accordingly.
 
+A full efficiency map can be computed by varying the input RPM and torque, which impact all of the loss terms depicted above. The accuracy of the model is only valid within a limited range of the COMSOL run, however motor operation is not expected outside this range. The map generated is overlaid with the original Joby estimated performance map, showing matching trends. The Joby map slightly over predicts performance by ~0.5-1.0\% compared to the COMSOL derived map at the operating condition, with an even bigger divergence at lower torque values.
+
 \subsection{Thermal Hydraulic Flow Model}
 
-In the context of the whole propulsion system, the motor nacelle as installed in the Mod 2 vehicle consists of a single JMX57 motor driven by a pair of Cruise Motor Controller (CMCs).  The CMC location within the Mod 2 nacelle rules out the use of independent cooling air paths for the motor and controllers.  
+In the context of the whole propulsion system, the motor nacelle as installed in the Mod 2 vehicle consists of a single JMX57 motor driven by a pair of Cruise Motor Controller (CMCs). The side-profile of the motor and canted CMCs is shown in Figure \ref{fig:Mod2Profile} The CMC location within the Mod 2 nacelle rules out the use of independent cooling air paths for the motor and controllers.  
 
 \begin{figure}[!h]% order of placement preference: here, top, bottom
 	\centering
@@ -507,10 +496,9 @@ In the context of the whole propulsion system, the motor nacelle as installed in
 	\label{fig:Mod2Profile}
 \end{figure}
 
-
-Cruise motor cooling is achieved with a combined flow path (“cascaded” cooling) that passes sequentially both the motor and CMC fin rows.  The nacelle inlet is split into a pair of concentric annuli - the innermost directly supplies the JMX57 motor with cool air, while the outer annulus directly charges the nacelle interior volume.  Warm air exhausted by the motor mixes with the bypass air, and continues through the motor controller (CMC) duct before being vented overboard.  
+Cruise motor cooling is achieved with a combined flow path (“cascaded” cooling) that passes sequentially through both the motor and CMC fin rows.  The nacelle inlet is split into a pair of concentric annuli - the innermost directly supplies the JMX57 motor with cool air, while the outer annulus directly charges the nacelle interior volume.  Warm air exhausted by the motor mixes with the bypass air, and continues through the motor controller (CMC) duct before being vented overboard.  
 This configuration differs from the proposed Mod 3 and Mod 4 cruise design with the inclusion of the bypass or “motor gap” inlet.  The proposed gap width is meant to provide clearance to the spinning outer diameter of the JMX57, an out-runner motor while still conforming to a nacelle outer mold line similar to the stock Tecnam p2006t aircraft. 
-A concern raised during the evaluation of this ‘cascade’ cooling system (as applied to the Mod 2 nacelle) is the potential for air to bypass the JMX57 cooling fins in favor of the ‘gap’ inlet, resulting in a reduction in cooler performance for the highest power density component in the cruise assembly.  
+A concern raised during the evaluation of this ‘cascade’ cooling system (as applied to the Mod 2 nacelle) is the potential for air to bypass the JMX57 cooling fins in favor of the `gap' inlet, resulting in a reduction in cooler performance for the highest power density component in the cruise assembly.  
 To better understand the interaction between the design parameters of the Mod 2 nacelle flow path, a combined thermal-hydraulic model was created in CRTech Sinaps, a visual modeling tool for SINDA/FLUINT thermo-hydraulic networks. 
 
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
@@ -527,7 +515,7 @@ Each heat-dissipating component (JMX57 motor, CMC) was modeled using lumped para
 
 \subsection{Nacelle Gap Design Sweep}
 
-Through testing, it was discovered that the motor heated up to it's maximum operational temperature faster than expected. Although the inverters did not experience high temperatures on the static test stand, the final configuration will expose the inverter heat sink to hot motor exhaust. This motivated a design study to determine the optimal spacing between the nacelle fairing and motor outer diameter to guarantee sufficient cooling for the inverters.
+Through testing, it was discovered that the motor heated up to it's maximum operational temperature faster than expected. Although the inverters did not experience high temperatures on the static test stand, the final configuration will expose the inverter heat sink to hot motor exhaust. This motivated a design study to determine the optimal spacing between the nacelle fairing and motor outer diameter to guarantee sufficient cooling for the inverters. Previous discussion of this gap sizing can be found in early works. \cite{Schnulo}
 
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
@@ -536,21 +524,21 @@ Through testing, it was discovered that the motor heated up to it's maximum oper
 	\label{fig:GapSweep}
 \end{figure}
 
-While the nacelle gap study is not predictive of actual component temperatures – as this requires higher fidelity conjugate heat transfer modeling.  Rather, the resulting steady lump temperatures are used to evaluate the overall cooling system performance sensitivity to the swept design parameters – specifically the “gap” inlet width.  Inlet conditions for the “gap inlet” study were chosen as a pessimistic  
-A design sweep was conducted on the Mod 2 thermo-hydraulic network – focusing specifically on the sensitivity of motor and CMC operating temperatures to changes in the “gap” inlet size.  
-The results of this sweep show little sensitivity in motor cooling performance to the size of the “gap” inlet – suggesting that the driving flow restriction in the network is downstream of the JMX57.  Of particular significance is the response of the CMC steady temperatures with increasing gap size:  increasing the volume of air that bypasses the motor results in lower operating temperatures for the CMCs without sacrificing motor cooling performance.  This effect diminishes past the nominal Mod 2 gap size of $\frac{3}{8}"$, but could be adapted to other X57 vehicle configurations (Mods 3 and 4) with little risk of compromising motor cooling. Further discussion of this gap sizing can be found in previous works. \cite{Schnulo}
+Admittedly, the nacelle gap study is not predictive of actual component temperatures, as this requires higher fidelity conjugate heat transfer modeling.  Rather, the resulting steady lump temperatures are used to evaluate the overall cooling system performance sensitivity to the swept design parameters; specifically the `gap' inlet width.  Inlet conditions for the `gap' annulus inlet study were chosen to be overly pessimistic to ensure sufficient thermal margin. 
+A design sweep was conducted on the Mod 2 thermo-hydraulic network, focusing specifically on the sensitivity of motor and CMC operating temperatures to changes in the `gap' inlet size.  
+The results of this sweep show little sensitivity in motor cooling performance to the size of the inlet, suggesting that the driving flow restriction in the network is downstream of the JMX57.  Of particular significance is the response of the CMC steady temperatures with increasing gap size:  increasing the volume of air that bypasses the motor results in lower operating temperatures for the CMCs without sacrificing motor cooling performance.  This effect diminishes past the nominal Mod 2 gap size of $\frac{3}{8}"$, but could be adapted to other X57 vehicle configurations (Mods 3 and 4) with little risk of compromising motor cooling.
 
 
 \section{Conclusions and Future Work}
 
 Determining motor efficiency without precision input and output power measurement capabilities required higher order modeling to compensate for multiple loss sources. 
 Testing at high powers on an open-air test stand also introduced additional confounding factors that were minimized through a combination of physical and operational controls.
-Completion of these tests have sufficiently reduce uncertainty margins to pave the way for full vehicle integration and testing. Efficiency was compared across three methods. The first originating from the motor manufacturer, second from a NASA derived model, and finally efficiency points from AirVolt testing. While the two analytic models should good agreement,the achieved fabricated performance was like more than 2.5\% lower, even with uncertainty from measured quantities considered.
+Completion of these tests have sufficiently reduce uncertainty margins to pave the way for full vehicle integration and testing. Efficiency was compared across three methods. The first originating from the motor manufacturer, second from a NASA derived model, and finally efficiency points from AirVolt testing. While the two analytic models showed good agreement,the achieved fabricated performance was likely more than 2.5\% lower, even with uncertainty from measured quantities considered.
 
 
 \section{Acknowledgements}
 
-The authors would like to thank the rest of the X-57 team, the NEAT facility, and the HEIST team for their collaboration. Scott MacAfee, from Joby motors, provided valuable and assistance about the motor manufacturing. Additional thanks to the NASA Flight Demonstration and Capabilities Project for sponsoring this work.
+The authors would like to thank the rest of the X-57 team, particularly the AirVolt team at NASA AFRC for their collaboration. Scott MacAfee and Arthur Dubois, from Joby motors, provided valuable information about the motor manufacturing. Additional thanks to the NASA Flight Demonstration and Capabilities Project for sponsoring this work.
 
 % produces the bibliography section when processed by BibTeX
 
