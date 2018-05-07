@@ -232,8 +232,7 @@ The subsequent analysis focuses on matching models to the first transient shown 
 
 Power lost to motor inefficiencies manifests as heat in the rotor, stator, and bearings. By tracking the transient temperature across a run, the overall motor efficiency can be estimated. To quantify the total heat loss of the system based on temperature, there must be a detailed accounting of all of the thermal properties, resistances, and cooling sources within the system. A Finite Element Analysis (FEA) thermal model was built in COMSOL to calculate the heat distribution in the motor stator. To improve simulation speed, an axi-symmetric cut of the stator was simulated, assuming the heating would be roughly symmetrical for every wedge. The thermal losses in the rotor were not experimentally measured, and therefore were not considered in this portion of the model. These rotor losses, due to the eddy currents and mechanical friction, are considered in subsequent sections. A particular 30 degree slice of the stator was chosen to maintain the relevant structural members. The model includes the main aluminum support trusses and heat sink fins, iron stator laminations, copper windings, and Nomex slot liners. Two separate models scenarios were run to match against two unknowns in the experimental data. First a steady-state run matching the end conditions of the first full power pulse; this model could be simulated quickly to evaluate the model sensitivity to various parameters. The second model was driven transiently to match the power profile of the AirVolt tests, and thermal convection terms across an array of time points. Between these to scenarios, loss and heat convection terms were calibrated until the temperature profiles matched.
 
-The first challenge was estimating the overal heat transfer coefficient of the heat sink, given uncertainty in the cooling cart air velocity.
-$3,000<Re<10,000$
+The first challenge was estimating the overall heat transfer coefficient of the heat sink, given uncertainty in the cooling cart air velocity. The cooling airflow was known to be in the Reynolds flow regime of $3,000<Re<10,000$, which corresponds to airspeeds between 12 and 40 m/s. Given this range, various non-dimensial parmaters, and ultimately, the heat transfer coefficient can be estimated from the hydraulic diamater $Dh$, air properties, $\rho, \nu, Cp, k$, and Darcy friction factor $f$.
 
 \begin{equation}
 Dh = \frac{2*a*b}{a+b} = 0.00358,
@@ -261,10 +260,7 @@ h = \frac{Nu*k}{Dh}
 \label{eq:h}
 \end{equation}
 
-\begin{equation}
-ROC_{T} = \frac{\delta T}{\delta t} = \frac{q'_{stator}-q'_{out}}{HC}
-\label{eq:ROC}
-\end{equation}
+Table \ref{tab:COMSOL} shows material constants assumed for each motor component. The bulk thermal conduction coefficients in the radial and axial directions of the windings are calculated based on the copper fill percentage, $CuF$, as well as the epoxy and copper conductivities, $ke, kc$ respectively.
 
 \begin{table}[hbt!]
 \caption{\label{tab:COMSOL} Model Assumptions}
@@ -281,7 +277,7 @@ Slot Liner (.25mm thick) &-&-&139 & 139\\\hline
 \end{table}
 
 \begin{equation}
-K_{radial} = \frac{ke*kc}{(1-CuF)*kc + CuF*k3}
+K_{radial} = \frac{ke*kc}{(1-CuF)*kc + CuF*ke}
 \label{eq:kradial}
 \end{equation}
 
@@ -307,64 +303,20 @@ Next a transient model is run for three different points from the trend-line cal
 	\label{fig:COMSOLresults}
 \end{figure}
 
-Figure \ref{fig:COMSOLresults} shows the results from various COMSOL model simulations compared to the experimentally recorded data. When using a 2D model, the data was best fit with a motor efficiency of 94\% and 25 $\frac{m}{s}$ cooling flow. Expanding the model back to a full 3D slice resulted in a noticeably higher heat capacity and final steady-state temperature. To match the initial temperature rise, the assumed motor losses had to be doubled, leading to an efficiency of 88\% instead of 94\%.
+Figure \ref{fig:COMSOLresults} shows the results from various COMSOL model simulations compared to the experimentally recorded data. When using a 2D model, the data was best fit with a motor efficiency of 94\% and 25 $\frac{m}{s}$ cooling flow. Expanding the model back to a full 3D slice resulted in a noticeably higher heat capacity and final steady-state temperature. To match the initial temperature rise, the assumed motor losses had to be doubled, leading to an efficiency of 88\% instead of 94\%. Although the 3D model is higher fidelity, it not believed to be more accurate. Modeling a more complete segment of the model only served to expand the error caused by difficult to measure details, such as inaccuracies due to voids in the epoxy. The potential over estimate in thermal mass leads to an underestimate in temperature rise rate. The 94\% efficiency was too high, even for the 2D case, so the true efficiency likely lies between 91-93\%. This real-world knockdown in efficiency won't have a significant impact on the range of the vehicle, but represents a significant increase in thermal load on the motor and downstream inverter.
 
 \subsubsection{Model Parameter Sensitivity}
 
 
-\subsection{Thermal Hydraulic Flow Model}
-
-The cruise propulsion system as installed in the Mod 2 vehicle consists of a single JMX57 motor driven by a pair of Cruise Motor Controller (CMCs).  The CMC location within the Mod 2 nacelle rules out the use of independent cooling air paths for the motor and controllers.  
-
-\begin{figure}[!h]% order of placement preference: here, top, bottom
-	\centering
-	\includegraphics[width=1.0\textwidth]{figures/mod2_profile.png}
-	\caption{Side profile view of the Mod2 cruise nacelle. Motor in green, heat sinks in red}
-	\label{fig:Mod2Profile}
-\end{figure}
-
-
-Cruise motor cooling is achieved with a combined flow path (“cascaded” cooling) that passes sequentially both the motor and CMC fin rows.  The nacelle inlet is split into a pair of concentric annuli - the innermost directly supplies the JMX57 motor with cool air, while the outer annulus directly charges the nacelle interior volume.  Warm air exhausted by the motor mixes with the bypass air, and continues through the motor controller (CMC) duct before being vented overboard.  
-This configuration differs from the proposed Mod 3 and Mod 4 cruise design with the inclusion of the bypass or “motor gap” inlet.  The proposed gap width is meant to provide clearance to the spinning outer diameter of the JMX57, an out-runner motor while still conforming to a nacelle outer mold line similar to the stock Tecnam p2006t aircraft. 
-A concern raised during the evaluation of this ‘cascade’ cooling system (as applied to the Mod 2 nacelle) is the potential for air to bypass the JMX57 cooling fins in favor of the ‘gap’ inlet, resulting in a reduction in cooler performance for the highest power density component in the cruise assembly.  
-To better understand the interaction between the design parameters of the Mod 2 nacelle flow path, a combined thermal-hydraulic model was created in CRTech Sinaps, a visual modeling tool for SINDA/FLUINT thermo-hydraulic networks. 
-
-\begin{figure}[!htb]% order of placement preference: here, top, bottom
-	\centering
-	\includegraphics[width=0.75\textwidth]{figures/sinaps_paramsweep.PNG}
-	\caption{Mod 2 Cruise Nacelle Flow Network in CRTech Sinaps}
-	\label{fig:Sinaps}
-\end{figure}
-
-The flow network consists of boundary, plenum and connector fluid lumps.  Boundary lumps are defined by their respective static temperature and pressure, while plena are defined by their volume.  Fluid connections between lumps are defined by their length, hydraulic diameter, and flow area.  The steady state-flow is solved with a single-phase correlation model build into Sinda/FLUINT; a Darcy-Weisbach solution based a friction factor derived from a numerically smooth representation of the Moody Chart  (Darcy-Weisbach friction factor vs. Reynolds Number) \cite{CRtech_2013}.  A multiplication factor is used to represent multiple parallel, identical flow connectors (i.e. a parallel channel heat sink).  Specific flow connection parameters (hydraulic diameter, length, and area) were derived from CAD models provided of the Mod 2 nacelle, the JMX57 cooling fins, and an extruded fin profile selected for the CMC cooler.  
-
-Each heat-dissipating component (JMX57 motor, CMC) was modeled using lumped parameters with a bulk specific heat (J/K) and thermal power dissipation.  The heat sources are coupled to the fluid network via forced convection ties.  Each tie is related to one or more fluid connectors to provide input parameters for the internal convection correlation appropriate for the flow solution.  A simple isothermal Nusselt number correlation (where Nu = 3.66) is used for low Reynolds number fluid paths, while turbulent convection coefficients are found via the Dittus-Boelter correlation. \cite{CRtech_2015}.  Transitional Reynolds number flows (2000 $<$ Re $<$ 4600) are modeled with Hausen’s transition correlation. \cite{Kays}
-
-
-\subsection{Nacelle Gap Design Sweep}
-
-Through testing, it was discovered that the motor heated up to it's maximum operational temperature faster than expected. Although the inverters did not experience high temperatures on the static test stand, the final configuration will expose the inverter heat sink to hot motor exhaust. This motivated a design study to determine the optimal spacing between the nacelle fairing and motor outer diameter to guarantee sufficient cooling for the inverters.
-
-\begin{figure}[!htb]% order of placement preference: here, top, bottom
-	\centering
-	\includegraphics[width=.75\textwidth]{figures/gapsweep_results.png}
-	\caption{Inverter Temperature Sensitivity to Fairing Gap Height}
-	\label{fig:GapSweep}
-\end{figure}
-
-While the nacelle gap study is not predictive of actual component temperatures – as this requires higher fidelity conjugate heat transfer modeling.  Rather, the resulting steady lump temperatures are used to evaluate the overall cooling system performance sensitivity to the swept design parameters – specifically the “gap” inlet width.  Inlet conditions for the “gap inlet” study were chosen as a pessimistic  
-A design sweep was conducted on the Mod 2 thermo-hydraulic network – focusing specifically on the sensitivity of motor and CMC operating temperatures to changes in the “gap” inlet size.  
-The results of this sweep show little sensitivity in motor cooling performance to the size of the “gap” inlet – suggesting that the driving flow restriction in the network is downstream of the JMX57.  Of particular significance is the response of the CMC steady temperatures with increasing gap size:  increasing the volume of air that bypasses the motor results in lower operating temperatures for the CMCs without sacrificing motor cooling performance.  This effect diminishes past the nominal Mod 2 gap size of $\frac{3}{8}"$, but could be adapted to other X57 vehicle configurations (Mods 3 and 4) with little risk of compromising motor cooling. Further discussion of this gap sizing can be found in previous works. \cite{Schnulo}
-
 
 \subsection{Two-dimensional performance and loss model}
 
-The original motor design by Joby \cite{Dubois2016} estimated the efficiency of the motor for a range of rpms and torque settings as shown in figure \ref{fig:map}. This performance map is compared against a similar fidelity model developed in MotorSolve. Finally efficiency points from AirVolt testing provide a third comparison point showing achieved performance with uncertainty from measured quantities.
+The original motor design by Joby \cite{Dubois2016} estimated the efficiency of the motor for a range of RPMs and torque settings as shown in figure \ref{fig:map}. This performance map is compared against a similar fidelity numerical model with various loss terms predicted from COMSOL. A MotorSolve model was also developed, as shown in Figure \ref{fig:motorSolve} but ultimately disregarded as it gave a drastically different result due to the inability to simulate a Halbach array, even when the same number of effective poles were simulated.
 
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
 	\includegraphics[width=1.0\textwidth]{figures/COMSOL_EM.png}
-	\caption{}
+	\caption{COMSOL Electromagnet FEA simulation showing magnetic flux density}
 	\label{fig:COMSOL_EM}
 \end{figure}
 
@@ -374,7 +326,7 @@ A 2D FEA simulation of the motor was made using Comsol Multiphysics rotating mac
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
 	\includegraphics[width=1.0\textwidth]{figures/motorSolve.png}
-	\caption{}
+	\caption{MotorSolve model interface}
 	\label{fig:motorSolve}
 \end{figure}
 
@@ -533,16 +485,6 @@ R_{phase} =\frac{N*l_{turn}*\rho}{n_{p}A_{wire}}
 Where N is the number of turns per phase, $l_{turn}$ is the length of wire in a single turn, $n_{p}$ is the number of parallel paths per phase, and $A_{wire}$ is the cross sectional area of a single wire.
 At nominal operating conditions $\tau_{req}$ is 262 Nm and $Loss_{resistive}$ is 947 watts. 
 
-
-\subsubsection{Motor Model Summary}
-The total loss predicted by this model at nominal motor operating condition is 2781 watts. The predicted motor efficiency is 95.6\%. As noted previously this is likely to be an underestimate of the losses. It is expected that the core loss estimate will need to be updated based on the results of thermal data from motor testing. This update will in turn increase the resistive losses in the windings as the required torque will increase accordingly.
-
-\section{Conclusions and Future Work}
-
-Determining motor efficiency without precision input and output power measurement capabilities required higher order modeling to compensate for multiple loss sources. 
-Testing at high powers on an open-air test stand also introduced additional confounding factors that were minimized through a combination of physical and operational controls.
-Completion of these tests have sufficiently reduce uncertainty margins to pave the way for full vehicle integration and testing.
-
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
     %\includegraphics[width=0.5\textwidth]{figures/eff_mapNASA.png}
@@ -550,6 +492,61 @@ Completion of these tests have sufficiently reduce uncertainty margins to pave t
 	\caption{Joby Efficiency Map with overlaid re-computed COMSOL Hybrid Model}
 	\label{fig:map}
 \end{figure}
+
+\subsubsection{Motor Model Summary}
+The total loss predicted by this model at nominal motor operating condition is 2781 watts. The predicted motor efficiency is 95.6\% at the experimental operating conditions of 255N-m and 2250 RPM. As noted previously this is likely to be an underestimate of the losses. It is expected that the core loss estimate will need to be updated based on the results of thermal data from motor testing. This update will in turn increase the resistive losses in the windings as the required torque will increase accordingly.
+
+\subsection{Thermal Hydraulic Flow Model}
+
+In the context of the whole propulsion system, the motor nacelle as installed in the Mod 2 vehicle consists of a single JMX57 motor driven by a pair of Cruise Motor Controller (CMCs).  The CMC location within the Mod 2 nacelle rules out the use of independent cooling air paths for the motor and controllers.  
+
+\begin{figure}[!h]% order of placement preference: here, top, bottom
+	\centering
+	\includegraphics[width=1.0\textwidth]{figures/mod2_profile.png}
+	\caption{Side profile view of the Mod2 cruise nacelle. Motor in green, heat sinks in red}
+	\label{fig:Mod2Profile}
+\end{figure}
+
+
+Cruise motor cooling is achieved with a combined flow path (“cascaded” cooling) that passes sequentially both the motor and CMC fin rows.  The nacelle inlet is split into a pair of concentric annuli - the innermost directly supplies the JMX57 motor with cool air, while the outer annulus directly charges the nacelle interior volume.  Warm air exhausted by the motor mixes with the bypass air, and continues through the motor controller (CMC) duct before being vented overboard.  
+This configuration differs from the proposed Mod 3 and Mod 4 cruise design with the inclusion of the bypass or “motor gap” inlet.  The proposed gap width is meant to provide clearance to the spinning outer diameter of the JMX57, an out-runner motor while still conforming to a nacelle outer mold line similar to the stock Tecnam p2006t aircraft. 
+A concern raised during the evaluation of this ‘cascade’ cooling system (as applied to the Mod 2 nacelle) is the potential for air to bypass the JMX57 cooling fins in favor of the ‘gap’ inlet, resulting in a reduction in cooler performance for the highest power density component in the cruise assembly.  
+To better understand the interaction between the design parameters of the Mod 2 nacelle flow path, a combined thermal-hydraulic model was created in CRTech Sinaps, a visual modeling tool for SINDA/FLUINT thermo-hydraulic networks. 
+
+\begin{figure}[!htb]% order of placement preference: here, top, bottom
+	\centering
+	\includegraphics[width=0.75\textwidth]{figures/sinaps_paramsweep.PNG}
+	\caption{Mod 2 Cruise Nacelle Flow Network in CRTech Sinaps}
+	\label{fig:Sinaps}
+\end{figure}
+
+The flow network consists of boundary, plenum and connector fluid lumps.  Boundary lumps are defined by their respective static temperature and pressure, while plena are defined by their volume.  Fluid connections between lumps are defined by their length, hydraulic diameter, and flow area.  The steady state-flow is solved with a single-phase correlation model build into Sinda/FLUINT; a Darcy-Weisbach solution based a friction factor derived from a numerically smooth representation of the Moody Chart  (Darcy-Weisbach friction factor vs. Reynolds Number) \cite{CRtech_2013}.  A multiplication factor is used to represent multiple parallel, identical flow connectors (i.e. a parallel channel heat sink).  Specific flow connection parameters (hydraulic diameter, length, and area) were derived from CAD models provided of the Mod 2 nacelle, the JMX57 cooling fins, and an extruded fin profile selected for the CMC cooler.  
+
+Each heat-dissipating component (JMX57 motor, CMC) was modeled using lumped parameters with a bulk specific heat (J/K) and thermal power dissipation.  The heat sources are coupled to the fluid network via forced convection ties.  Each tie is related to one or more fluid connectors to provide input parameters for the internal convection correlation appropriate for the flow solution.  A simple isothermal Nusselt number correlation (where Nu = 3.66) is used for low Reynolds number fluid paths, while turbulent convection coefficients are found via the Dittus-Boelter correlation. \cite{CRtech_2015}.  Transitional Reynolds number flows (2000 $<$ Re $<$ 4600) are modeled with Hausen’s transition correlation. \cite{Kays}
+
+
+\subsection{Nacelle Gap Design Sweep}
+
+Through testing, it was discovered that the motor heated up to it's maximum operational temperature faster than expected. Although the inverters did not experience high temperatures on the static test stand, the final configuration will expose the inverter heat sink to hot motor exhaust. This motivated a design study to determine the optimal spacing between the nacelle fairing and motor outer diameter to guarantee sufficient cooling for the inverters.
+
+\begin{figure}[!htb]% order of placement preference: here, top, bottom
+	\centering
+	\includegraphics[width=.75\textwidth]{figures/gapsweep_results.png}
+	\caption{Inverter Temperature Sensitivity to Fairing Gap Height}
+	\label{fig:GapSweep}
+\end{figure}
+
+While the nacelle gap study is not predictive of actual component temperatures – as this requires higher fidelity conjugate heat transfer modeling.  Rather, the resulting steady lump temperatures are used to evaluate the overall cooling system performance sensitivity to the swept design parameters – specifically the “gap” inlet width.  Inlet conditions for the “gap inlet” study were chosen as a pessimistic  
+A design sweep was conducted on the Mod 2 thermo-hydraulic network – focusing specifically on the sensitivity of motor and CMC operating temperatures to changes in the “gap” inlet size.  
+The results of this sweep show little sensitivity in motor cooling performance to the size of the “gap” inlet – suggesting that the driving flow restriction in the network is downstream of the JMX57.  Of particular significance is the response of the CMC steady temperatures with increasing gap size:  increasing the volume of air that bypasses the motor results in lower operating temperatures for the CMCs without sacrificing motor cooling performance.  This effect diminishes past the nominal Mod 2 gap size of $\frac{3}{8}"$, but could be adapted to other X57 vehicle configurations (Mods 3 and 4) with little risk of compromising motor cooling. Further discussion of this gap sizing can be found in previous works. \cite{Schnulo}
+
+
+\section{Conclusions and Future Work}
+
+Determining motor efficiency without precision input and output power measurement capabilities required higher order modeling to compensate for multiple loss sources. 
+Testing at high powers on an open-air test stand also introduced additional confounding factors that were minimized through a combination of physical and operational controls.
+Completion of these tests have sufficiently reduce uncertainty margins to pave the way for full vehicle integration and testing. Efficiency was compared across three methods. The first originating from the motor manufacturer, second from a NASA derived model, and finally efficiency points from AirVolt testing. While the two analytic models should good agreement,the achieved fabricated performance was like more than 2.5\% lower, even with uncertainty from measured quantities considered.
+
 
 \section{Acknowledgements}
 
