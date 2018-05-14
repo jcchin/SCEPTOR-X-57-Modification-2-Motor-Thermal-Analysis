@@ -86,7 +86,7 @@
 
 \begin{abstract}
 
-This work covers the refinement of thermal models from design estimates to actual fabricated performance. Matching the experimental data of the first fully electrified version of the X-57 Maxwell experimental vehicle requires high fidelity thermal analysis to sufficiently capture the electric motor and inverter temperature profiles. Qualification test data of the motors and inverters is used to validate finite element analysis models, which are then used to predict thermal performance over various notional mission transients. An additional thermal-hydraulic models is used to estimate flow characteristics through the propulsor nacelle and component heat sinks. After calibration of the higher order models, overall component sizing and peak temperature constraints can be distilled to reduced order models, to improve model flexibility and utility. The methods and experiments described are a snapshot of on-going work and include challenges encountered during motor performance verification.
+This work covers the refinement of thermal models from design estimates to actual fabricated performance. Matching the experimental data of the first fully electrified version of the X-57 Maxwell experimental vehicle requires high fidelity thermal analysis to sufficiently capture the electric motor and inverter temperature profiles. Qualification test data-sets of the motors and inverters are used to validate finite element analysis models, which are then used to predict thermal performance over various notional mission transients. An additional thermal-hydraulic model is used to estimate flow characteristics through the propulsor nacelle and component heat sinks. After calibration of the higher order models, overall component sizing and peak temperature constraints can be distilled to reduced order models, to improve model flexibility and utility. The methods and experiments described are a snapshot of on-going work and include challenges encountered during motor performance verification.
 
 
 
@@ -107,7 +107,7 @@ This work covers the refinement of thermal models from design estimates to actua
   $\Delta B$ \> peak to peak flux density $(\frac{Nm}{A})$\\
   $C_f$ \> skin friction coefficient $(-)$\\
   $C_p$ \> specific heat $(\frac{J}{K})$\\
-  $Cu_F$ \> copper Fill Factor $(-)$\\
+  $Cu_F$ \> copper fill factor $(-)$\\
   $Dh$ \> hydraulic diameter $(m)$\\
   %$\epsilon$ \> emissivity \\
   $F$ \> force $(N)$\\
@@ -128,11 +128,11 @@ This work covers the refinement of thermal models from design estimates to actua
   $P$ \> power $(W)$ \\
   \\
   \\
-  $P_{r}$ \> Prandtl Number $(-)$\\
+  $P_{r}$ \> Prandtl number $(-)$\\
   $\dot{Q}$ \> heat transfer rate $(\frac{W}{s})$ \\
   $R$ \> electrical resistance $(\Omega)$\\
-  $Ra_D$ \> Rayleigh Number $(-)$\\
-  $R_{e}$ \> Reynolds Number $(-)$\\
+  $Ra_D$ \> Rayleigh number $(-)$\\
+  $R_{e}$ \> Reynolds number $(-)$\\
   $T$ \> temperature $(K)$\\
   $t$ \> time $(s)$\\
   $V$ \> velocity $(\frac{m}{s})$\\
@@ -163,8 +163,7 @@ This work covers the refinement of thermal models from design estimates to actua
 
 \section{Introduction}
 
-The NASA X-57 experimental aircraft aims to demonstrate all-electric flight, specifically using distributed electric propulsion to achieve 4.8x better efficiency at cruise. The development is segmented into 4 distinct vehicle configurations, referred to as ``mods'' as shown in Figure \ref{fig:Mod2Big}. Mod 2, shown on the left, uses a modified Tecnam P2006T fuselage and wing, with the inboard propellers powered by electric motors and batteries. After successful flight in this configuration, the propellors are moved to the wingtips, and the wing area is reduced by a factor of 2.5 using high-aspect area wings in Mod 3. The final Mod 4 configuration implements six small high lift motors along each wing to provide additional lift during climb and final approach, while being folded conformal to the nacelle during cruise. This progression is shown in the right column of Figure \ref{fig:Mod2Big}. \cite{falck_X57}
-\cite{Borer_2016}
+The NASA X-57 experimental aircraft aims to demonstrate all-electric flight, specifically using distributed electric propulsion to achieve 4.8x better efficiency at cruise. The development is segmented into 4 distinct vehicle configurations, referred to as ``mods'' as shown in Figure \ref{fig:Mod2Big}. Mod 2, shown on the left, uses a modified Tecnam P2006T fuselage and wing, with the inboard propellers powered by electric motors and batteries. After successful flight in this configuration, the propellors are moved to the wingtips, and the wing area is reduced by a factor of 2.5 using high-aspect area wings in Mod 3. The final Mod 4 configuration implements six small high lift motors along each wing to provide additional lift during climb and final approach, while being folded conformal to the nacelle during cruise. This progression is shown in the right column of Figure \ref{fig:Mod2Big}. \cite{falck_X57}\textsuperscript{,}\cite{Borer_2016}
 
 This work covers the refinement of thermal models from design estimates to actual fabricated performance. The motor and inverters were manufactured by Joby motors and have been ground tested at NASA Armstrong. Testing was performed on the AirVolt test stand as part of qualification testing, with the secondary intent of verifying thermal models. To further validate efficiency estimates, the motors are undergoing further testing on a dynamo-meter in a more controlled thermal environment. This paper captures the work, results and lessons learned to-date.
 
@@ -185,7 +184,7 @@ This work covers the refinement of thermal models from design estimates to actua
 \subsection{Experimental Setup}
 \subsubsection{AirVolt Test Stand and Experimental Setup}
 
-AirVolt is an open-air test stand located at NASA's Armstrong Flight Research Center designed for testing electric motors and controllers.\cite{Aamod_2015} \cite{Papathakis}A profile and aft shot can be seen in Figure \ref{fig:airvolt2}. In preparation for X-57's first flight, the cruise motors are subjected to endurance and vibration testing per FAR Part 33 Airworthiness Standards. The stand measures torque, thrust, voltage, current, power, acceleration, and temperature. Initial full power tests were run for a duration of five minutes, with 16 thermistor locations on the motor. Due to a maximum allowable temperature of 100 degrees C, portable cooling carts were used to blow up to 600 lbs/min of 8 \degree C air directly onto the propeller spinner.  The test discussed in this paper had three cooling carts active, with a commanded torque of 255 N-m at 2250 rotations per minute to simulate a 60kW full power climb. Each run started at a 27\degree C winding temperature and terminated at 100\degree C. The first run lasted 21:06 minutes. The three full throttle commands lasted 6:53, 6:37, 4:28 minutes respectively and are plotted in Figure \ref{fig:airvoltData}
+AirVolt is an open-air test stand located at NASA's Armstrong Flight Research Center designed for testing electric motors and controllers.\cite{Aamod_2015}\textsuperscript{,}\cite{Papathakis}A profile and aft shot of the stand can be seen in Figure \ref{fig:airvolt2} with the mounted cruise motor and inverters. In preparation for X-57's first flight, the cruise motors are subjected to endurance and vibration testing per FAR Part 33 Airworthiness Standards. The stand measures torque, thrust, voltage, current, power, acceleration, and temperature. Initial full power tests were run for a duration of five minutes, with 16 thermistor locations on the motor. Due to a maximum allowable temperature of 100\degree C, portable cooling carts were used to blow up to 600 lbs/min of 8 \degree C air directly onto the propeller spinner.  The test discussed in this paper had three cooling carts active, with a commanded torque of 255 N-m at 2250 rotations per minute to simulate a 60kW full power climb. Each run started at a 27\degree C winding temperature and terminated at 100\degree C. The first run lasted 21:06 minutes. The three full throttle commands lasted 6:53, 6:37, 4:28 minutes respectively and are plotted in Figure \ref{fig:airvoltData}.
 
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
@@ -196,10 +195,9 @@ AirVolt is an open-air test stand located at NASA's Armstrong Flight Research Ce
 
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
-	\includegraphics[width=0.75\textwidth]{figures/AirvoltMotor.png}
+	\includegraphics[width=0.75\textwidth]{figures/10_12_cleanedv2.png}
 	%\includegraphics[width=0.5\textwidth]{figures/AirvoltCMC.png}
-	\caption{(Left) Airvolt test run motor thermocouple reading (Right) Inverter chip temperature reading.
-    10/12 9:29am Test 1 60kW, 3 cooling carts, airspeed unknown, steady-state reached (almost).}
+	\caption{Airvolt test run from 10/12/17. 60kW, 2250 RPM @ 255Nm. 15 motor temperature sensor readings with three active cooling carts}
 	\label{fig:airvoltData}
 \end{figure}
 
@@ -211,7 +209,7 @@ The following sections summarize of the relevant thermal results obtained. Effic
 
 \subsubsection{Data Analysis}
 
-Test data on Airvolt was sampled at 60 samples per second, however the provided raw thermistor data was not calibrated, since it was not the main focus of the trial run. Therefore, each sensor values were individually offset to the mean temperature reading before the motor was run. A large spread in peak temperature was recorded across various winding positions, so the peak model temperature was calibrated against the peak recorded thermistor reading. Temperature readings drastically below the peak reading were assumed to have poor thermal contact with the windings. The highest temperature reading also appeared to have substantial EMI noise, so the data was smoothed via a Fast Fourier Transform (FFT) in Matlab.
+Test data on Airvolt was sampled at 50 samples per second, however the provided raw thermistor data was not calibrated, since it was not the main focus of the trial run. Therefore, each sensor value was individually offset to the mean temperature reading before the motor was run. A large spread in peak temperature was recorded across various winding positions, so the peak model temperature was calibrated against the peak recorded thermistor reading. Temperature readings drastically below the peak reading were assumed to have poor thermal contact with the windings. The highest temperature reading also appeared to have substantial EMI noise, so the data was smoothed via a Fast Fourier Transform (FFT) in Matlab.
 
 \setminted{fontsize=\small,baselinestretch=1}
 \begin{minted}{matlab}
@@ -230,7 +228,7 @@ The subsequent analysis focuses on matching models to the first transient shown 
 
 \subsection{Finite Element Thermal Model}
 
-Power lost to motor inefficiencies manifests as heat in the rotor, stator, and bearings. By tracking the transient temperature across a run, the overall motor efficiency can be estimated. To quantify the total heat loss of the system based on temperature, there must be a detailed accounting of all of the thermal properties, resistances, and cooling sources within the system. A Finite Element Analysis (FEA) thermal model was built in COMSOL to calculate the heat distribution in the motor stator. To improve simulation speed, an axi-symmetric cut of the stator was simulated, assuming the heating would be roughly symmetrical for every wedge. The thermal losses in the rotor were not experimentally measured, and therefore were not considered in this portion of the model. These rotor losses, due to the eddy currents and mechanical friction, are considered in subsequent sections. A particular 30 degree slice of the stator was chosen to maintain the relevant structural members. The model includes the main aluminum support trusses and heat sink fins, iron stator laminations, copper windings, and Nomex slot liners. Two separate models scenarios were run to match against two unknowns in the experimental data. First a steady-state run matching the end conditions of the first full power pulse; this model could be simulated quickly to evaluate the model sensitivity to various parameters. The second model was driven transiently to match the power profile of the AirVolt tests, and thermal convection terms across an array of time points. Between these to scenarios, loss and heat convection terms were calibrated until the temperature profiles matched.
+Power lost to motor inefficiencies manifests as heat in the rotor, stator, and bearings. By tracking the transient temperature across a run, the overall motor efficiency can be estimated. To quantify the total heat loss of the system based on temperature, there must be a detailed accounting of all of the thermal properties, resistances, and cooling sources within the system. A Finite Element Analysis (FEA) thermal model was built in COMSOL to calculate the heat distribution in the motor stator. To improve simulation speed, an axi-symmetric cut of the stator was simulated, assuming the heating would be roughly symmetrical for every wedge. The thermal losses in the rotor were not experimentally measured, and therefore were not considered in this portion of the model. These rotor losses, due to the eddy currents and mechanical friction, are considered in subsequent sections. A particular 30\degree  slice of the stator was chosen to maintain the relevant structural members. The model includes the main aluminum support trusses and heat sink fins, iron stator laminations, copper windings, and Nomex slot liners. Two separate model scenarios were run to match against two unknowns in the experimental data. First a steady-state run matching the end conditions of the first full power pulse; this model could be simulated quickly to evaluate the model sensitivity to various parameters. The second model was driven transiently to match the power profile of the AirVolt tests, and thermal convection terms across an array of time points. Between these to scenarios, loss and convection coefficient terms were calibrated until the model temperature profiles matched experimental data.
 
 The first challenge was estimating the overall heat transfer coefficient of the heat sink, given uncertainty in the cooling cart air velocity. The cooling airflow was known to be in the Reynolds flow regime of $3,000<Re<10,000$, which corresponds to airspeeds between 12 and 40 m/s. Given this range, various non-dimensial parmaters, and ultimately, the heat transfer coefficient can be estimated from the hydraulic diamater $Dh$, air properties, $\rho, \nu, Cp, k$, and Darcy friction factor $f$.
 
@@ -263,16 +261,36 @@ h = \frac{Nu*k}{Dh}
 Table \ref{tab:COMSOL} shows material constants assumed for each motor component. The bulk thermal conduction coefficients in the radial and axial directions of the windings are calculated based on the copper fill percentage, $CuF$, as well as the epoxy and copper conductivities, $ke, kc$ respectively.
 
 \begin{table}[hbt!]
-\caption{\label{tab:COMSOL} Model Assumptions}
+\caption{\label{tab:COMSOL} Material Assumptions}
 \centering
 \begin{tabular}{lcccc}
-Material  & $\rho$ $\frac{J}{kg*K}$ & $Cp$ $\frac{J}{kg*K}$  & $K_{radial}$ $\frac{W}{m*K}$ & $K_{axial}$ $\frac{W}{m*K}$\\\hline
-JNEX900 Steel & 7650& 500& 20& 20\\
+\\
+Material  & $\rho$ $\frac{kg}{m^3}$ & $Cp$ $\frac{J}{kg*K}$  & $K_{radial}$ $\frac{W}{m*K}$ & $K_{axial}$ $\frac{W}{m*K}$\\\hline
+JNEX900 Steel (.1mm thick) & 7495& 500& 20& 20\\
 Aluminum 6063-T83   & 2700  & 900 & 201& 201  \\
 Copper & 8960 & 385 & 400& 400\\
 Epoxy & 1225 & 1000 & 1& 1 \\
 Copper Epoxy Bulk & 4705.75 & 723.25 & 1.8145 & 180.55\\
-Slot Liner (.25mm thick) &-&-&139 & 139\\\hline
+Slot Liner (.25mm thick) & 610 &1005&139 & 139\\\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[hbt!]
+\caption{\label{tab:COMSOL2} Model Assumptions}
+\centering
+\begin{tabular}{lcccc}
+\\\hline
+& RPM & 2250\\
+& Electrical Frequency & 750Hz\\
+& Shaft Torque & 255Nm \\\hline
+Stator Core & $\alpha$ = 1.27 & $\beta$ = 1.75 & k = 0.003 \\\hline
+Rotor Magnets  & Material   & NdFeB grade 45SH  \\
+& Remnant Flux & 1.35T\\
+& Density $\rho$ & 7500 $\frac{kg}{m^3}$ \\
+& Relative Permeability & 1.05\\
+& Conductivity & $.625*10^6 \frac{S}{m}$\\
+& Number of poles & 40\\
+& Magnets per pole & 4\\\hline
 \end{tabular}
 \end{table}
 
@@ -289,29 +307,25 @@ K_{axial} = CuF*kc + (1-CuF)*ke
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
 	\includegraphics[width=0.75\textwidth]{figures/jmx57_motor_comsol.png}
-	\caption{COMSOL}
+	\caption{COMSOL 30\degree slice motor thermal model}
 	\label{fig:comsol}
 \end{figure}
 
-Using a steady-state model a range of airspeeds and motor efficiencies are run in a design of experiments. To improve simulation speed, the model is further simplified to a 2D slice of the stator at the center of the coil. A polynomial is then fit through all the cases where the steady state is 100C to determine a trend-line of losses based on airspeed.
+Using a steady-state model a range of airspeeds and motor efficiencies are run in a design of experiments. To improve simulation speed, the model is further simplified to a 2D slice of the stator at the center of the coil. A polynomial is then fit through all the cases where the steady state is 100\degree C to determine a trend-line of losses based on airspeed.
 Next a transient model is run for three different points from the trend-line calculated, this data is then compared against a separate AirVolt test that didn't have any active air cooling. The transient test was compared to the uncooled test data since it was closer to adiabatic temperature rise, without cooling airflow as an additional confounding factor. Based on the three computed heat rise rates, a specific airspeed and loss combination will match the temperature rise per time $(\frac{dT}{dt})$ of the experimental data.
 
 \begin{figure}[!h]% order of placement preference: here, top, bottom
 	\centering
-	\includegraphics[width=1.0\textwidth]{figures/Temp_motor_1012_0929.png}
-	\caption{}
+	\includegraphics[width=1.0\textwidth]{figures/COMSOLvsTest.png}
+	\caption{Comparison of 2D and 3D COMSOL models to Airvolt data}
 	\label{fig:COMSOLresults}
 \end{figure}
 
-Figure \ref{fig:COMSOLresults} shows the results from various COMSOL model simulations compared to the experimentally recorded data. When using a 2D model, the data was best fit with a motor efficiency of 94\% and 25 $\frac{m}{s}$ cooling flow. Expanding the model back to a full 3D slice resulted in a noticeably higher heat capacity and final steady-state temperature. To match the initial temperature rise, the assumed motor losses had to be doubled, leading to an efficiency of 88\% instead of 94\%. Although the 3D model is higher fidelity, it not believed to be more accurate. Modeling a more complete segment of the model only served to expand the error caused by difficult to measure details, such as inaccuracies due to voids in the epoxy. The potential over estimate in thermal mass leads to an underestimate in temperature rise rate. The 94\% efficiency was too high, even for the 2D case, so the true efficiency likely lies between 91-93\%. This real-world knockdown in efficiency won't have a significant impact on the range of the vehicle, but represents a significant increase in thermal load on the motor and downstream inverter.
+Figure \ref{fig:COMSOLresults} shows the results from various COMSOL model simulations compared to the experimentally recorded data. When using a 2D model, the data was best fit with a motor efficiency of 94\% and 25 $\frac{m}{s}$ cooling flow. Expanding the model back to a full 3D slice resulted in a noticeably higher heat capacity and final steady-state temperature. To match the initial temperature rise, the assumed motor losses had to be doubled, leading to an efficiency of 88\% instead of 94\%. Although the 3D model is higher fidelity, it's not believed to be more accurate. Modeling a more complete segment of the model only served to expand the error caused by difficult to measure details, such as inaccuracies due to voids in the epoxy. The potential over-estimate in thermal mass leads to an underestimate in temperature rise rate. The 94\% efficiency was too high, even for the 2D case, so the true efficiency likely lies between 90-93\%. This real-world knockdown in efficiency won't have a significant impact on the range of the vehicle, but represents a significant increase in thermal load on the motor and downstream inverter.
 
-\subsubsection{Model Parameter Sensitivity}
-
-
+Losses in efficiency are not limited to the stator, so determining total motor efficiency based on coil temperature rise requires scaling measured losses proportionally based on the fractional loss contribution of the stator. Determination of the relative losses in each part of the motor is discussed in the following section.
 
 \subsection{Two-dimensional performance and loss model}
-
-The original motor design by Joby \cite{Dubois2016} estimated the efficiency of the motor for a range of RPMs and torque settings as shown in figure \ref{fig:map}. This performance map is compared against a similar fidelity numerical model with various loss terms predicted from COMSOL. A MotorSolve model was also developed, as shown in Figure \ref{fig:motorSolve} but ultimately disregarded as it gave a drastically different result due to the inability to simulate a Halbach array, even when the same number of effective poles were simulated.
 
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
@@ -320,29 +334,22 @@ The original motor design by Joby \cite{Dubois2016} estimated the efficiency of 
 	\label{fig:COMSOL_EM}
 \end{figure}
 
+A 2D FEA simulation of the motor was made using COMSOL Multiphysics rotating machinery module in order to establish initial loss predictions. The FEA model was used to determine static torque vs current curves for the motor and the magnetic field in all components vs rotor position at nominal operating conditions. The magnetic field data was post-processed to predict stator core loss, wire proximity loss, and eddy current loss in the magnets. Mechanical windage and bearing losses were also calculated. These losses were then used to scale the required torque, subsequently updating the required current so that shaft power was maintain. Resistive losses were then predicted using this scaled up current. The models used for these loss calculations will be discussed in the following sections. An example result from the FEA model can be seen in Figure \ref{fig:COMSOL_EM}. Material properties used in this analysis are available in Table \ref{tab:COMSOL}.
 
-A 2D FEA simulation of the motor was made using Comsol Multiphysics rotating machinery module in order to establish initial loss predictions. The FEA model was used to determine static torque vs current curves for the motor and the magnetic field in all components vs rotor position at nominal operating conditions. The magnetic field data was post processed to predict stator core loss, wire proximity loss, and eddy current loss in the magnets. Mechanical windage and bearing losses were also calculated. These losses were than used to scale the required torque and thereby the required current so that shaft power was maintain. Resistive losses were then predicted using this scaled up current. The models used for these loss calculations will be discussed in the following sections. An example result from the FEA model can be seen in Figure \ref{fig:COMSOL_EM}. Material properties used in this analysis are available in Table X.
-
-\begin{figure}[!htb]% order of placement preference: here, top, bottom
-	\centering
-	\includegraphics[width=1.0\textwidth]{figures/motorSolve.png}
-	\caption{MotorSolve model interface}
-	\label{fig:motorSolve}
-\end{figure}
 
 \subsubsection{Stator Core Loss}
-Stator core loss was predicted using the Improved Generalized Stienmetz Equation (IGSE) with minor loop separation method found in Reference \cite{CoreLoss}. The IGSE is a modification to the Stienmetz Equation that allows for accurate prediction of core loss when the magnetic field is not sinusoidal. The Stienmetz Equation defines the specific core loss (loss per Kg of material) in electrical steel subjected to a sinusoidal varying magnetic field as
+Stator core loss was predicted using the Improved Generalized Stienmetz Equation (IGSE) with minor loop separation method \cite{CoreLoss}. The IGSE is a modification to the Stienmetz Equation that allows for accurate prediction of core loss when the magnetic field is not sinusoidal. The Stienmetz Equation defines the specific core loss per kg of material, $P_{v}$, in electrical steel subjected to a sinusoidal varying magnetic field as
 
 \begin{equation}
 P_{v} = k*f^{\alpha}B^{\beta}
 \label{eq:CoreLoss}
 \end{equation}
 
-Where $P_v$ is specific core loss, f is the frequency of the sinusoidal varying magnetic field, B is the peak value of the field, 
+Where $f$ is the frequency of the sinusoidal varying magnetic field, $B$ is the peak value of the field, 
 and $k$, $\alpha$, and $\beta$ are material constants. $k$, $\alpha$, and $\beta$  
 can generally be determined from core loss information provided by electrical steel manufacturers. 
-Estimates of these constants for the JNEX900 laminated electrical steel used in SCEPTORs wing tip motors can be found in Table X. 
-These estimates were made using charts found in Ref \cite{JFE}. The IGSE uses these parameters to predict core loss for non-sinusoidal waves as
+Estimates of these constants for the JNEX900 laminated electrical steel used in X-57's wing tip motors can be found in Table \ref{tab:COMSOL2}. 
+These estimates were made using charts found in the JFE Reference \cite{JFE}. The IGSE uses these parameters to predict core loss for non-sinusoidal waves as
 
 
 \begin{equation}
@@ -354,7 +361,7 @@ k_{1} = \frac{k}{2^{\beta-1}\pi^{\alpha-1}}\int_{0}^{2\pi}|cos(\theta)|^{\alpha}
 \label{eq:CoreLoss2b}
 \end{equation}
 
-Where T is the period of repetition of the field in the core, $\Delta B$ is the peak to peak flux density, and $k_{1}$ is an updated loss coefficient. The algorithm for numerical implementing of this equation with minor loop separation is discussed in detail in Reference \cite{CoreLoss}. This algorithm was implemented on the magnetic field vs rotor position data from the COMSOL simulation with time normalized so that core loss at any rotational speed can be estimate by
+Where $T$ is the period of repetition of the field in the core, $\Delta B$ is the peak to peak flux density, and $k_{1}$ is an updated loss coefficient. The algorithm for numerical implementing of this equation with minor loop separation is discussed in detail in the reference from Venkatachalam.\cite{CoreLoss} This algorithm was implemented on the magnetic field vs rotor position data from the COMSOL simulation with time normalized so that core loss at any rotational speed can be estimate by
 
 \begin{equation}
 Loss_{core} = 0.2157*f_{elec}^{\alpha}
@@ -363,9 +370,9 @@ Loss_{core} = 0.2157*f_{elec}^{\alpha}
 
 Where $Loss_{core}$ is the core loss in the motor and $f_{elec}$ is the electrical frequency of the motor at a given rotational speed. At nominal motor operating conditions (2250 RPM) this predicts 966 watts of core loss. 
 
-This loss prediction is only meant to serve as a min baseline for core loss in the motor as the IGSE most likely under predicts the core losses. The IGSE is only accurate for unidirectional fields and therefore it doesn’t account for the losses from the rotating fields in the stator tooth tips and the corners of the connection between the stator teeth and the stator back Iron \ref{Krings}. Additionally this loss estimate did not account for the effects of the pulse width modulation used to produce sinusoidal stator current. Therefore Iron Core loss is the most likely location that additionally losses need to be added based on the thermal behavior of the motor. 
+This loss prediction is only meant to serve as a minimum baseline for core loss in the motor as the IGSE most likely under predicts the core losses. The IGSE is only accurate for unidirectional fields and therefore it doesn't account for the losses from the rotating fields in the stator tooth tips and the corners of the connection between the stator teeth and the stator back iron \cite{Krings}. Additionally this loss estimate did not account for the effects of the pulse width modulation used to produce sinusoidal stator current. Therefore, iron core loss is the most likely underpredicted source of additional losses need to be added based on the thermal behavior of the motor. 
 \subsubsection{Eddy Currents in Magnets}
-Eddy currents in the Magnets where predicted using the eddy current model for general periodic waves found in \cite{Roshen}. The model defines volumetric loss in a component experiencing a periodically varying magnetic field as 
+Eddy currents in the magnets where predicted using the eddy current model for general periodic waves found in works by Roshen\cite{Roshen}. The model defines volumetric loss in a component experiencing a periodically varying magnetic field as 
 
 \begin{equation}
 P_{c} = \frac{d^2}{3*\pi*\rho}\frac{1}{T}\int_{0}^{T}(\frac{dB}{dt})dt
@@ -388,7 +395,7 @@ P_{c} = \frac{\pi a^2}{4*\rho}\frac{1}{T}\int_{0}^{T}(\frac{dB}{dt})dt
 \label{eq:EddyLoss3}
 \end{equation}
 
-Where a is the wire diameter. This equation was applied to the magnetic field vs rotor position data with time normalized so that eddy current loss in the wire at any rotational speed can be estimate by
+Where $a$ is the wire diameter. This equation was applied to the magnetic field vs rotor position data with time normalized so that eddy current loss in the wire at any rotational speed can be estimate by
 
 \begin{equation}
 Loss_{wire,eddy} = 0.00040681*f_{elec}^{2}
@@ -400,7 +407,7 @@ Where $Loss_{wire,eddy}$ is the total eddy current loss in the windings. At nomi
 \subsubsection{Mechanical Losses}
 
 Mechanical losses are separated into windage and bearing losses. Windage losses are calculated in the airgap and on the axial faces of the rotor. 
-The windage losses in the airgap are estimated using the model from reference \cite{Huang} where power loss $P$ is determined based on $k$, a constant equal to 2.5 for slotted surfaces, $C_{f}$, the skin friction coefficient, $\rho$ the density of air, $\omega$ the rotational velocity, $r$ the rotor radius, and $l$ the axial length of the rotor.
+The windage losses in the airgap are estimated using the model described by Huang,\cite{Huang} where power loss $P$ is determined based on $k$, a constant equal to 2.5 for slotted surfaces, $C_{f}$, the skin friction coefficient, $\rho$ the density of air, $\omega$ the rotational velocity, $r$ the rotor radius, and $l$ the axial length of the rotor.
 
 \begin{equation}
 P = kC_{f}\pi\rho\omega^{3}r^{4}l
@@ -414,7 +421,8 @@ C_{f}= 0.515*\frac{\frac{\delta^{0.3}}{r}}{Re_{\delta}^{0.5}} , \quad \quad \qua
 \label{eq:Cf}
 \end{equation}
 
-Where $\mu$ is the dynamic viscosity of air.The windage loss on the axial faces of the rotor is approximated using the loss model for disks in free space from reference \cite{Saari}. Where P is given by 
+Where $\mu$ is the dynamic viscosity of air. 
+The windage loss on the axial faces of the rotor is approximated using the loss model for disks in free space developed by Saari.\cite{Saari} Where P is given by 
 
 \begin{equation}
 P =0.5C_{f}\rho\omega^{3}(r_{2}^{5}-r_{1}^{5})
@@ -436,7 +444,7 @@ Loss_{bearing} = M*\omega = 0.5*\mu_{f}*D*F*\omega
 \label{eq:BearingLoss}
 \end{equation}
 
-Where M is the moment, D is the bearing bore diameter, F is the load the bearing is supporting, and $\mu_{f}$ is the bearing friction coefficient. For the double row angular contact bearing in the motor $\mu_{f}$ is .0024  The mechanical loss estimate at nominal operating conditions is 60watts.
+Where M is the moment, D is the bearing bore diameter, F is the load the bearing is supporting, and $\mu_{f}$ is the bearing friction coefficient. For the double row angular contact bearing in the motor $\mu_{f}$ is .0024  The mechanical loss estimate at nominal operating conditions is 60 watts.
 
 
 \subsubsection{Resistive Losses in Windings}
@@ -447,7 +455,7 @@ In order to predict the resistive losses in the windings, first the required tor
 \label{eq:TotalLoss}
 \end{equation}
 
-Where $\tau_{shaft}$ is the output torque needed,$\omega$ is the motor rotational speed in radians per second, and $\tau_{req}$ is the torque the motor has to produce to overcome the losses and produce the shaft torque. Using $\tau_{req}$ the required current can be calculated from the static torque vs current data taken from 2D FEA by
+Where $\tau_{shaft}$ is the output torque needed, $\omega$ is the motor rotational speed in radians per second, and $\tau_{req}$ is the torque the motor has to produce to overcome the losses and produce the shaft torque. Using $\tau_{req}$ the required current can be calculated from the static torque vs current data taken from 2D FEA by
 
 \begin{equation}
 I = \frac{0.9091*\tau_{req}-22.6806}{\sqrt{2}sin(\phi)}
@@ -476,27 +484,37 @@ At nominal operating conditions $\tau_{req}$ is 262 Nm and $Loss_{resistive}$ is
 	\centering
     %\includegraphics[width=0.5\textwidth]{figures/eff_mapNASA.png}
     \includegraphics[width=1.0\textwidth]{figures/map_compare.png}
-	\caption{Joby Efficiency Map with overlaid re-computed COMSOL Hybrid Model}
+	\caption{Joby Efficiency Map with overlaid re-computed COMSOL Hybrid Model in translucent black and white.}
 	\label{fig:map}
 \end{figure}
 
 \subsubsection{Motor Model Summary}
-The total loss predicted by this model at nominal motor operating condition is 2781 watts. The predicted motor efficiency is 95.6\% at the experimental operating conditions of 255N-m and 2250 RPM. As noted previously this is likely to be an underestimate of the losses. It is expected that the core loss estimate will need to be updated based on the results of thermal data from motor testing. This update will in turn increase the resistive losses in the windings as the required torque will increase accordingly.
+The total loss predicted by this model at nominal motor operating condition is 2781 watts. The predicted motor efficiency is 95.6\% at the experimental operating conditions of 255N-m and 2250 RPM. As noted previously this is likely to be an underestimate of the losses. Windage loss is likely to be higher than the simplified flat disk model, and CFD would be necessary to account for the rotor arms and axial flow. It is also expected that the core loss estimate will need to be updated based on the results of thermal data from motor testing. These compounding updates will in turn increase the resistive losses in the windings as the required torque will increase accordingly. Iron loss could be overly optimistic by a few hundred watts, due to manufacturing and flux modulation (PWM) effects.
 
-A full efficiency map can be computed by varying the input RPM and torque, which impact all of the loss terms depicted above. The accuracy of the model is only valid within a limited range of the COMSOL run, however motor operation is not expected outside this range. The map generated is overlaid with the original Joby estimated performance map, showing matching trends. The Joby map slightly over predicts performance by ~0.5-1.0\% compared to the COMSOL derived map at the operating condition, with an even bigger divergence at lower torque values.
+A full efficiency map can be computed by repeating the process over a range of input RPM and torque values, which impact all of the loss terms described above. The accuracy of the model is only valid within a limited range of the COMSOL run, however motor operation is not expected outside this range. Figure \ref{fig:map} shows the map generated with the methods discussed here in black in white overlaid with the original Joby estimated performance map\cite{Dubois2016}, showing matching trends. The Joby map even further over-predicts performance by ~0.5-1.0\% compared to the COMSOL derived map at the operating condition, with an even bigger divergence at lower torque values.
 
+A MotorSolve model was also developed, as shown in Figure \ref{fig:motorSolve}. However, with the given software package, it was not possible to simulate a permanent magnet Halbach array. The efficiency map results obtained with an equivalent number of effective poles did not produce equivalent results. Additional changes to produce more appropriate efficiency trends were not further explored with this method.
+
+\begin{figure}[!htb]% order of placement preference: here, top, bottom
+	\centering
+	\includegraphics[width=1.0\textwidth]{figures/motorSolve.png}
+	\caption{(Left) Solidworks model of the motor with the stator in green. (Right) MotorSolve model interface}
+	\label{fig:motorSolve}
+\end{figure}
+
+\pagebreak
 \subsection{Thermal Hydraulic Flow Model}
 
-In the context of the whole propulsion system, the motor nacelle as installed in the Mod 2 vehicle consists of a single JMX57 motor driven by a pair of Cruise Motor Controller (CMCs). The side-profile of the motor and canted CMCs is shown in Figure \ref{fig:Mod2Profile} The CMC location within the Mod 2 nacelle rules out the use of independent cooling air paths for the motor and controllers.  
+In the context of the whole propulsion system, the motor nacelle as installed on each wing of the Mod 2 vehicle consists of a JMX57 motor driven by a pair of Cruise Motor Controllers (CMCs). The side-profile of the motor and inclined CMCs is shown in Figure \ref{fig:Mod2Profile}. The CMC location within the Mod 2 nacelle most naturally lends itself to series airflow cooling. Small cooling ducts embedded in the stock wing leading edge are available if independent cooling air paths for the motor and controllers are ultimately needed.  
 
 \begin{figure}[!h]% order of placement preference: here, top, bottom
 	\centering
-	\includegraphics[width=1.0\textwidth]{figures/mod2_profile.png}
-	\caption{Side profile view of the Mod2 cruise nacelle. Motor in green, heat sinks in red}
+	\includegraphics[width=1.0\textwidth]{figures/mod2_profilev2.png}
+	\caption{Side profile view of the Mod2 cruise nacelle. Motor in green, inverter in gray, heat sinks in red}
 	\label{fig:Mod2Profile}
 \end{figure}
 
-Cruise motor cooling is achieved with a combined flow path (“cascaded” cooling) that passes sequentially through both the motor and CMC fin rows.  The nacelle inlet is split into a pair of concentric annuli - the innermost directly supplies the JMX57 motor with cool air, while the outer annulus directly charges the nacelle interior volume.  Warm air exhausted by the motor mixes with the bypass air, and continues through the motor controller (CMC) duct before being vented overboard.  
+Cruise motor cooling is achieved with a combined flow path (“cascaded” cooling) that passes sequentially through both the motor and CMC fin rows.  The nacelle inlet is split into a pair of concentric annuli with the innermost directly supplying the JMX57 motor with cool air, while the outer annulus directly charges the nacelle interior volume.  Warm air exhausted by the motor mixes with the bypass air, and continues through the motor controller (CMC) duct before being vented overboard.  
 This configuration differs from the proposed Mod 3 and Mod 4 cruise design with the inclusion of the bypass or “motor gap” inlet.  The proposed gap width is meant to provide clearance to the spinning outer diameter of the JMX57, an out-runner motor while still conforming to a nacelle outer mold line similar to the stock Tecnam p2006t aircraft. 
 A concern raised during the evaluation of this ‘cascade’ cooling system (as applied to the Mod 2 nacelle) is the potential for air to bypass the JMX57 cooling fins in favor of the `gap' inlet, resulting in a reduction in cooler performance for the highest power density component in the cruise assembly.  
 To better understand the interaction between the design parameters of the Mod 2 nacelle flow path, a combined thermal-hydraulic model was created in CRTech Sinaps, a visual modeling tool for SINDA/FLUINT thermo-hydraulic networks. 
@@ -510,12 +528,22 @@ To better understand the interaction between the design parameters of the Mod 2 
 
 The flow network consists of boundary, plenum and connector fluid lumps.  Boundary lumps are defined by their respective static temperature and pressure, while plena are defined by their volume.  Fluid connections between lumps are defined by their length, hydraulic diameter, and flow area.  The steady state-flow is solved with a single-phase correlation model build into Sinda/FLUINT; a Darcy-Weisbach solution based a friction factor derived from a numerically smooth representation of the Moody Chart  (Darcy-Weisbach friction factor vs. Reynolds Number) \cite{CRtech_2013}.  A multiplication factor is used to represent multiple parallel, identical flow connectors (i.e. a parallel channel heat sink).  Specific flow connection parameters (hydraulic diameter, length, and area) were derived from CAD models provided of the Mod 2 nacelle, the JMX57 cooling fins, and an extruded fin profile selected for the CMC cooler.  
 
-Each heat-dissipating component (JMX57 motor, CMC) was modeled using lumped parameters with a bulk specific heat (J/K) and thermal power dissipation.  The heat sources are coupled to the fluid network via forced convection ties.  Each tie is related to one or more fluid connectors to provide input parameters for the internal convection correlation appropriate for the flow solution.  A simple isothermal Nusselt number correlation (where Nu = 3.66) is used for low Reynolds number fluid paths, while turbulent convection coefficients are found via the Dittus-Boelter correlation. \cite{CRtech_2015}.  Transitional Reynolds number flows (2000 $<$ Re $<$ 4600) are modeled with Hausen’s transition correlation. \cite{Kays}
+Each heat-dissipating component (JMX57 motor, CMC) was modeled using lumped parameters with a bulk specific heat (J/K) and thermal power dissipation.  The heat sources are coupled to the fluid network via forced convection ties.  Each tie is related to one or more fluid connectors to provide input parameters for the internal convection correlation appropriate for the flow solution.  A simple isothermal Nusselt number correlation (where Nu = 3.66) is used for low Reynolds number fluid paths, while turbulent convection coefficients are found via the Dittus-Boelter correlation\cite{CRtech_2015}:  
 
+\begin{equation}
+Nu_{Dh} = 0.023Re_{Dh}^{4/5}Pr^{2/5}
+\label{eq:dittus_boelter}
+\end{equation}
+Transitional Reynolds number flows (2000 $<$ Re $<$ 4600) are modeled with Hausen’s transition correlation\cite{Kays}:
+
+\begin{equation}
+Nu_{Dh} = 3.66+\frac{0.0668\left ( \frac{Dh}{L} \right )Re_{Dh}Pr}{1+.04\left [ \left ( \frac{Dh}{L} \right )Re_{Dh}Pr \right ]^\frac{2}{3}}
+\label{eq:Hausens}
+\end{equation}
 
 \subsection{Nacelle Gap Design Sweep}
 
-Through testing, it was discovered that the motor heated up to it's maximum operational temperature faster than expected. Although the inverters did not experience high temperatures on the static test stand, the final configuration will expose the inverter heat sink to hot motor exhaust. This motivated a design study to determine the optimal spacing between the nacelle fairing and motor outer diameter to guarantee sufficient cooling for the inverters. Previous discussion of this gap sizing can be found in early works. \cite{Schnulo}
+Through testing, it was discovered that the motor heated up to it's maximum operational temperature faster than expected. Although the inverters did not experience high temperatures on the static test stand, the final configuration will expose the inverter heat sink to hot motor exhaust. This motivated a design study to determine the optimal spacing between the nacelle fairing and motor outer diameter to guarantee sufficient cooling for the inverters. Previous discussion of this gap sizing can be found in earlier works. \cite{Schnulo}\textsuperscript{,} \cite{Chin}
 
 \begin{figure}[!htb]% order of placement preference: here, top, bottom
 	\centering
@@ -524,7 +552,10 @@ Through testing, it was discovered that the motor heated up to it's maximum oper
 	\label{fig:GapSweep}
 \end{figure}
 
-Admittedly, the nacelle gap study is not predictive of actual component temperatures, as this requires higher fidelity conjugate heat transfer modeling.  Rather, the resulting steady lump temperatures are used to evaluate the overall cooling system performance sensitivity to the swept design parameters; specifically the `gap' inlet width.  Inlet conditions for the `gap' annulus inlet study were chosen to be overly pessimistic to ensure sufficient thermal margin. 
+The nacelle gap study is not predictive of actual component temperatures,
+as this requires higher fidelity conjugate heat transfer modeling. 
+Rather, the resulting steady lump temperatures are used to evaluate the overall cooling system performance sensitivity to the swept design parameters; specifically the `gap' inlet width.  Inlet conditions for the `gap' annulus inlet study were chosen to represent adverse ground-level conditions:
+where T0 = 35\degree C at 2300' ASL (approximately 0.92 atm).  
 A design sweep was conducted on the Mod 2 thermo-hydraulic network, focusing specifically on the sensitivity of motor and CMC operating temperatures to changes in the `gap' inlet size.  
 The results of this sweep show little sensitivity in motor cooling performance to the size of the inlet, suggesting that the driving flow restriction in the network is downstream of the JMX57.  Of particular significance is the response of the CMC steady temperatures with increasing gap size:  increasing the volume of air that bypasses the motor results in lower operating temperatures for the CMCs without sacrificing motor cooling performance.  This effect diminishes past the nominal Mod 2 gap size of $\frac{3}{8}"$, but could be adapted to other X57 vehicle configurations (Mods 3 and 4) with little risk of compromising motor cooling.
 
@@ -533,8 +564,7 @@ The results of this sweep show little sensitivity in motor cooling performance t
 
 Determining motor efficiency without precision input and output power measurement capabilities required higher order modeling to compensate for multiple loss sources. 
 Testing at high powers on an open-air test stand also introduced additional confounding factors that were minimized through a combination of physical and operational controls.
-Completion of these tests have sufficiently reduce uncertainty margins to pave the way for full vehicle integration and testing. Efficiency was compared across three methods. The first originating from the motor manufacturer, second from a NASA derived model, and finally efficiency points from AirVolt testing. While the two analytic models showed good agreement,the achieved fabricated performance was likely more than 2.5\% lower, even with uncertainty from measured quantities considered.
-
+Completion of these tests have sufficiently reduced uncertainty margins to pave the way for full vehicle integration and testing. Efficiency was compared across three methods. The first originating from the motor manufacturer, second from a NASA derived model, and finally efficiency points from AirVolt testing. While the two analytic models showed good agreement,the achieved fabricated performance of the cruise motors is likely more than 2.5\% lower than designed, even with uncertainty from measured quantities considered. Total motor efficiency is estimated in the range of 90-93\%, with 88\% as the lower limit and 95.6\% as the upper limit inherent in the design. This margin of uncertainty will be further minimized with additional planned testing to more tightly control cooling conditions and sensor accuracy.
 
 \section{Acknowledgements}
 
